@@ -11,6 +11,27 @@
     </a>
   {{ end }}
   {{ if site.Menus.main }}
+  {{ if gt (len .Site.Languages) 1 }}
+    {{ $flags := dict "en" "🇬🇧" "nl" "🇳🇱" "ru" "🇷🇺" }}
+    <ul class="language-switcher">
+      {{ $current := . }}
+      {{ range .Site.Languages }}
+        {{ $lang := .Lang }}
+        {{ $flag := index $flags $lang | default "🏳️" }}
+        {{ $translated := index (where $current.Translations "Site.Language.Lang" $lang) 0 }}
+        <li>
+          <a
+            class="btn btn-square {{ if eq $current.Site.Language.Lang $lang }}btn-active{{ end }}"
+            href="{{ with $translated }}{{ .RelPermalink }}{{ else }}{{ (site.GetPage (printf "/%s" $lang)).RelPermalink }}{{ end }}"
+            title="{{ .LanguageName | default .Lang }}"
+          >
+            <span aria-hidden="true">{{ $flag }}</span>
+            <span class="sr-only">{{ .LanguageName | default .Lang }}</span>
+          </a>
+        </li>
+      {{ end }}
+    </ul>
+  {{ end }}
     <ul>
       <li>
         <button class="btn btn-square" id="menu-toggle" aria-expanded="false" type="button" title="{{ T "menu" }}">
