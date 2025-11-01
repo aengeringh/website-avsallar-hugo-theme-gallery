@@ -1,1 +1,10 @@
 /* custom.css */
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.column {
+  flex: 1 1 300px; /* each column takes at least 300px */
+}
